@@ -15,6 +15,5 @@
 *.la
 *.a
 
-# CMake directories
-debug
-release
+# dependency directories
+lib/*
