@@ -1,27 +1,32 @@
 #!/bin/bash
 
-GMOCK="gmock-1.7.0"
+GMOCK_MASTER="master"
 LIB_DIR="lib"
-GMOCK_DIR="$LIB_DIR/$GMOCK"
-GMOCK_ZIP="${GMOCK}.zip"
-GMOCK_ZIP_URL="https://googlemock.googlecode.com/files/${GMOCK_ZIP}"
+GMOCK_DIR="$LIB_DIR/googletest-master"
+GMOCK_ZIP="${GMOCK_MASTER}.zip"
+GMOCK_ZIP_URL="https://github.com/google/googletest/archive/master.zip"
 
 function setup_build_directory()
 {
+    cd ${GMOCK_DIR}
     build_name=$1
     dir_name=$(echo $build_name | tr '[:upper:]' '[:lower:]')
     if [ ! -d "$dir_name" ]; then
         echo ">> creating $dir_name directory..."
         mkdir $dir_name
     fi
-    echo ">> running cmake in ${dir_name}..."
+    echo ">> running cmake in ${GMOCK_DIR}/${dir_name}..."
     cd $dir_name 
-    if ! cmake .. -DCMAKE_BUILD_TYPE=$build_name \
-                  -DGMOCK_ROOT=$GMOCK_DIR > /dev/null; then
+    if ! cmake .. -DCMAKE_BUILD_TYPE=$build_name > /dev/null; then
         echo ">> error running cmake!"
         exit 1
     fi
-    cd ..
+    echo ">> running make in ${GMOCK_DIR}/${dir_name}..."
+    if ! make > /dev/null; then
+        echo ">> error running make!"
+        exit 1
+    fi
+    cd ../../..
 }
 
 function setup_gmock()
@@ -43,7 +48,6 @@ function setup_gmock()
 }
 
 setup_gmock
-setup_build_directory "Debug"
 setup_build_directory "Release"
 
 exit 0
