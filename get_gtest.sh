@@ -33,6 +33,7 @@ function setup_gmock()
 {
     if [ ! -d "$GTEST_DIR" ]; then
         echo ">> downloading gmock..."
+        mkdir "$LIB_DIR"
         cd "$LIB_DIR"
         if ! wget $GTEST_ZIP_URL > /dev/null; then
             echo ">> error running wget!"
