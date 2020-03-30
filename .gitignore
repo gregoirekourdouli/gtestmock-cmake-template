@@ -16,5 +16,4 @@
 *.a
 
 # dependency directories
-lib/*
 build/*
