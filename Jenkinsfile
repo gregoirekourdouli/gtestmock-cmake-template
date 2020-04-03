@@ -1,8 +1,6 @@
 pipeline {
   agent any
 
-  def current_dir=${env.WORKSPACE}
-
   stages {
     stage('Clear') {
       steps {
@@ -12,7 +10,7 @@ pipeline {
 
     stage('CMake') {
       steps {
-        dir(path: current_dir+'/build') {
+        dir(path: '${env.WORKSPACE}/build') {
           sh 'cmake ..'
         }
 
@@ -21,7 +19,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        dir(path: current_dir+'/build') {
+        dir(path: '${env.WORKSPACE}/build') {
           sh 'make'
         }
 
@@ -31,7 +29,7 @@ pipeline {
     stage('Test') {
       steps {
         pwd()
-        dir(path: current_dir+'/build') {
+        dir(path: '${env.WORKSPACE}/build') {
           sh './tests --gtest_output="xml:test-results.xml"'
         }
 
@@ -40,7 +38,7 @@ pipeline {
 
     stage('Test Analysis') {
       steps {
-        dir(path: current_dir+'/build') {
+        dir(path: '${env.WORKSPACE}/build') {
           junit 'test-results.xml'
         }
 
