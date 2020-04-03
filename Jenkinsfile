@@ -10,7 +10,7 @@ pipeline {
 
     stage('CMake') {
       steps {
-        dir(path: '${env.WORKSPACE}/build') {
+        dir(path: pwd()+'/build') {
           sh 'cmake ..'
         }
 
@@ -19,7 +19,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        dir(path: '${env.WORKSPACE}/build') {
+        dir(path: pwd()+'/build') {
           sh 'make'
         }
 
@@ -28,8 +28,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        pwd()
-        dir(path: '${env.WORKSPACE}/build') {
+        dir(path: pwd()+'/build') {
           sh './tests --gtest_output="xml:test-results.xml"'
         }
 
@@ -38,7 +37,7 @@ pipeline {
 
     stage('Test Analysis') {
       steps {
-        dir(path: '${env.WORKSPACE}/build') {
+        dir(path: pwd()+'/build') {
           junit 'test-results.xml'
         }
 
