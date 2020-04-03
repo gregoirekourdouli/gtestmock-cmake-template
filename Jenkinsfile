@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('Clear') {
       steps {
-        sh 'rm -r build'
         sh 'mkdir build'
       }
     }
